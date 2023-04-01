@@ -11,11 +11,11 @@ services:
       - '54320:54320'
     volumes:
       - pwf-db:/var/lib/postgresql/data
-  pgadmin:
+  pwf-db-pgadmin:
     image: dpage/pgadmin4
     logging:
       driver: none
-    container_name: pgadmin4_container
+    container_name: pwf-db-pgadmin
     restart: always
     ports:
       - '5050:80'
@@ -26,17 +26,28 @@ services:
       - pgadmin-data:/var/lib/pgadmin
   pwf-api:
     container_name: 'pwf-api'
-    build: ./pwf-api
+    build: ./api
     volumes:
-      - ./pwf-api/.build:/pwf-api/.build
-      - ./pwf-api/src:/pwf-api/src
-      - ./pwf-api/test:/pwf-api/test
-      - ./pwf-api/.env:/pwf-api/.env
+      - ./api/.build:/pwf-api/.build
+      - ./api/src:/pwf-api/src
+      - ./api/test:/pwf-api/test
+      - ./api/.env:/pwf-api/.env
     command: npm run start:dev
     ports:
       - '3000:3002'
     extra_hosts:
       - 'host.docker.internal:host-gateway'
+  pwf-seed:
+    container_name: 'pwf-seed'
+    depends_on:
+      - pwf-db
+      - pwf-api
+    build: ./seed/.
+    command: python3 /seed/seed.py
+    volumes:
+      - type: bind
+        source: ./seed/seeding
+        target: /seed
 volumes:
   pwf-db:
   pgadmin-data:

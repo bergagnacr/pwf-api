@@ -1,0 +1,46 @@
+version: '3.8'
+services:
+  pwf-db:
+    image: postgres:14.1-alpine
+    container_name: pwf-db
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '54320:54320'
+    volumes:
+      - pwf-db:/var/lib/postgresql/data
+  pgadmin:
+    image: dpage/pgadmin4
+    logging:
+      driver: none
+    container_name: pgadmin4_container
+    restart: always
+    ports:
+      - '5050:80'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+  pwf-api:
+    container_name: 'pwf-api'
+    build: ./pwf-api
+    volumes:
+      - ./pwf-api/.build:/pwf-api/.build
+      - ./pwf-api/src:/pwf-api/src
+      - ./pwf-api/test:/pwf-api/test
+      - ./pwf-api/.env:/pwf-api/.env
+    command: npm run start:dev
+    ports:
+      - '3000:3002'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+volumes:
+  pwf-db:
+  pgadmin-data:
+  pwf-api:
+networks:
+  default:
+    name: sl-manager-local_default

@@ -34,7 +34,7 @@ services:
       - ./api/.env:/pwf-api/.env
     command: npm run start:dev
     ports:
-      - '3000:3002'
+      - '3000:3000'
     extra_hosts:
       - 'host.docker.internal:host-gateway'
   pwf-seed:
@@ -54,4 +54,4 @@ volumes:
   pwf-api:
 networks:
   default:
-    name: sl-manager-local_default
+    name: pwf-api_default

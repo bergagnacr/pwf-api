@@ -70,3 +70,23 @@ with body:
         "teeth": value
     },
 ```
+
+---
+
+- To get all factories:
+
+```bash
+GET http://localhost:3000/factories
+```
+
+- To get All factories data:
+
+```bash
+GET http://localhost:3000/factories/data
+```
+
+- To Get all Data for a specific Factory:
+
+```bash
+GET http://localhost:3000/factories/[id]/data
+```

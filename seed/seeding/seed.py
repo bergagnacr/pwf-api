@@ -52,5 +52,6 @@ if database.wait_until_table_exists("sprockets"):
     logger.info("Starting seeding")
     seed_sprockets_data(database)
     seed_factories_data(database)
+    logger.info('FINISHED SEEDING! ')
 else:
     logger.error("Table sprockets does not exist")

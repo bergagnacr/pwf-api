@@ -32,6 +32,8 @@ data from factories and sprockets.
 $ docker compose up
 ```
 
+and wait until the data is seeded. Then you have all the endpoints available.
+
 # Endpoints
 
 - To get all sprockets:
